@@ -1,0 +1,285 @@
+\ProvidesPackage{preamble}[KSE Engineering Notes Preamble]
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{ipsum}
+\usepackage{xspace}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{lmodern}
+\usepackage{fontawesome5}
+\usepackage[super]{nth}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[colorlinks=true,
+            linkcolor=NavyBlue,
+            urlcolor=RoyalBlue,
+            citecolor=OliveGreen]{hyperref}
+
+
+\tcbuselibrary{theorems,skins,breakable}
+\pgfplotsset{compat=1.18}
+
+\setlength{\headheight}{25pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+% GAPA framework commands
+\usetikzlibrary{positioning,fit,backgrounds}
+
+\definecolor{goalscolor}{RGB}{46, 125, 50}      % Green
+\definecolor{activitiescolor}{RGB}{25, 118, 210} % Blue  
+\definecolor{productscolor}{RGB}{245, 124, 0}    % Orange
+\definecolor{assessmentscolor}{RGB}{156, 39, 176} % Purple
+
+% command to create a sticker/note
+\newcommand{\sticker}[2][yellow!20]{%
+    \node[draw, fill=#1, rounded corners=3pt, font=\small, text width=2cm, align=center, minimum height=0.8cm] {#2};
+}
+
+% GAPA env
+\newenvironment{gapamanual}{%
+\begin{center}
+\begin{tikzpicture}[
+    gapa box/.style={draw, thick, minimum width=6cm, minimum height=4.5cm},
+    sticker/.style={draw, rounded corners=3pt, font=\footnotesize, text width=1.8cm, align=center, minimum height=0.7cm}
+]
+% draw quadrants
+\node[gapa box, fill=goalscolor!10] (goals) at (0,0) {};
+\node[gapa box, fill=assessmentscolor!10] (assessments) at (6.5,0) {};  
+\node[gapa box, fill=activitiescolor!10] (activities) at (0,-5) {};
+\node[gapa box, fill=productscolor!10] (products) at (6.5,-5) {};
+
+% add titles
+\node[font=\Large\bfseries, color=goalscolor] at (0,1.8) {GOALS};
+\node[font=\Large\bfseries, color=assessmentscolor] at (6.5,1.8) {ASSESSMENTS};
+\node[font=\Large\bfseries, color=activitiescolor] at (0,-3.2) {ACTIVITIES};
+\node[font=\Large\bfseries, color=productscolor] at (6.5,-3.2) {PRODUCTS};
+}{
+\end{tikzpicture}
+\end{center}
+}
+
+% commands for manual sticker placement
+\newcommand{\goalsticker}[3]{\node[sticker, fill=goalscolor!20] at (#1,#2) {#3};}
+\newcommand{\assessmentsticker}[3]{\node[sticker, fill=assessmentscolor!20] at (#1,#2) {#3};}
+\newcommand{\activitysticker}[3]{\node[sticker, fill=activitiescolor!20] at (#1,#2) {#3};}
+\newcommand{\productsticker}[3]{\node[sticker, fill=productscolor!20] at (#1,#2) {#3};}
+
+
+\providecommand{\notedate}{\today}
+
+\definecolor{theoremcolor}{RGB}{30, 144, 255} 
+\definecolor{definitioncolor}{RGB}{34, 139, 34}
+\definecolor{examplecolor}{RGB}{255, 140, 0}
+\definecolor{warningcolor}{RGB}{220, 20, 60}
+\definecolor{notecolor}{RGB}{138, 43, 226}
+\definecolor{sectioncolor}{RGB}{25, 25, 112}
+
+
+
+\newtcbtheorem[number within=section]{theorem}{Theorem}{
+    enhanced,
+    colback=theoremcolor!5,
+    colframe=theoremcolor,
+    fonttitle=\bfseries,
+    separator sign none,
+    description delimiters parenthesis,
+    breakable
+}{th}
+
+\newtcbtheorem[number within=section]{definition}{Definition}{
+    enhanced,
+    colback=definitioncolor!5,
+    colframe=definitioncolor,
+    fonttitle=\bfseries,
+    separator sign none,
+    description delimiters parenthesis,
+    breakable
+}{def}
+
+\newtcbtheorem[number within=section]{example}{Example}{
+    enhanced,
+    colback=examplecolor!5,
+    colframe=examplecolor,
+    fonttitle=\bfseries,
+    separator sign none,
+    description delimiters parenthesis,
+    breakable
+}{ex}
+
+\newtcbtheorem[number within=section]{lemma}{Lemma}{
+    enhanced,
+    colback=Plum!10,
+    colframe=Plum,
+    fonttitle=\bfseries,
+    separator sign none,
+    description delimiters parenthesis,
+    breakable
+}{lem}
+
+
+\newtcolorbox{notebox}{
+    enhanced,
+    colback=notecolor!5,
+    colframe=notecolor,
+    leftrule=3mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=5mm,
+    title={\faInfoCircle\ Note},
+    fonttitle=\bfseries\color{notecolor}
+}
+
+\newtcolorbox{warningbox}{
+    enhanced,
+    colback=warningcolor!5,
+    colframe=warningcolor,
+    leftrule=3mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=5mm,
+    title={\faExclamationTriangle\ Warning},
+    fonttitle=\bfseries\color{warningcolor}
+}
+
+\newtcolorbox{tipbox}{
+    enhanced,
+    colback=Turquoise!5,
+    colframe=Turquoise,
+    leftrule=3mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=5mm,
+    title={\faLightbulb\ Tip},
+    fonttitle=\bfseries\color{Turquoise}
+}
+
+\newtcolorbox{quotebox}[1][]{
+    enhanced,
+    colback=blue!3,
+    colframe=blue!40,
+    leftrule=4mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=5mm,
+    before upper={\Large\faQuoteLeft\normalsize\hspace{3mm}},
+    after upper={\hspace{3mm}\Large\faQuoteRight\ifx\relax#1\relax\else\par\vspace{2mm}\hfill\small\textit{--- #1}\fi}
+}
+
+\titleformat{\section}{\Large\bfseries\color{sectioncolor}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{NavyBlue}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{RoyalBlue}}{\thesubsubsection}{1em}{}
+
+% header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{sectioncolor}\textbf{\coursename}}
+\fancyhead[C]{\color{NavyBlue}\textbf{\chaptertitle}}
+% \fancyhead[R]{\color{RoyalBlue}\textbf{\today}}
+% \fancyhead[R]{\color{RoyalBlue}\textbf{\notedate}}
+\fancyhead[R]{\color{sectioncolor}\textbf{\notedate}}
+
+\fancyfoot[C]{\color{sectioncolor}\textbf{\thepage}}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{sectioncolor}\leaders\hrule height \headrulewidth\hfill}}
+
+
+\lstdefinestyle{engineeringcode}{
+    backgroundcolor=\color{Gray!10},
+    commentstyle=\color{OliveGreen},
+    keywordstyle=\color{Blue}\bfseries,
+    numberstyle=\tiny\color{Gray},
+    stringstyle=\color{Red},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{Gray}
+}
+\lstset{style=engineeringcode}
+
+
+% maths
+\newcommand{\der}[2]{\frac{d#1}{d#2}}
+\newcommand{\ddd}[2]{\frac{d^2#1}{d#2^2}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\integral}[4]{\int_{#1}^{#2} #3 \, d#4}
+\newcommand{\limit}[2]{\lim_{#1 \to #2}}
+\newcommand{\summation}[3]{\sum_{#1}^{#2} #3}
+
+
+\newcommand{\highlight}[1]{\colorbox{yellow!30}{#1}}
+\newcommand{\important}[1]{\textcolor{Red}{\textbf{#1}}}
+
+
+\newcommand{\setdate}[1]{
+    \renewcommand{\notedate}{#1}
+}
+
+\newcommand{\redtick}{\textcolor{red}{\checkmark}\ }
+
+
+\newcommand{\custompart}[1]{%
+    \cleardoublepage
+    \stepcounter{part}
+    \thispagestyle{empty}
+    \begin{center}
+        \vspace*{3cm}
+        {\Huge\bfseries\color{sectioncolor} Sprint \thepart}\\[2cm]
+        {\huge\color{NavyBlue} #1}
+        \vfill
+    \end{center}
+    \addcontentsline{toc}{part}{Sprint \thepart: #1}
+    \newpage
+}
+
+\newcommand{\ksed}{KSE~$\Delta$\xspace}
+
+\newcommand{\startchapter}[2]{%
+  \renewcommand{\chaptertitle}{#1}%
+  \setdate{#2}%
+  \section{\chaptertitle}%
+}
+
+
+% ============================================%
+\newcommand{\coursename}{KSE~$\Delta$ELTA}%
+\newcommand{\chaptertitle}{}                  %
+\newcommand{\studentname}{Andrei Andrievsky}  %
+% ============================================%
+
+
+\endinput

@@ -1,0 +1,19 @@
+.DS_Store
+
+# some notes are sensitive so I keep them here
+notes/private/
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+
+*.lof
+*.lot
+*.gz
+*.bbl
+*.blg
