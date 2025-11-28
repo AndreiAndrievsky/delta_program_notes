@@ -1,0 +1,78 @@
+name: Build LaTeX and Deploy to Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+      
+      - name: Create index.html
+        run: |
+          mkdir public
+          mv main.pdf public/
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Delta Program Notes</title>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                  body { 
+                      margin: 0; 
+                      font-family: Arial, sans-serif;
+                  }
+                  .download-btn {
+                      position: fixed;
+                      top: 20px;
+                      right: 20px;
+                      background: #0366d6;
+                      color: white;
+                      padding: 10px 20px;
+                      border-radius: 6px;
+                      text-decoration: none;
+                      font-weight: bold;
+                      z-index: 1000;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                  }
+                  .download-btn:hover {
+                      background: #022a60ff;
+                  }
+                  iframe { 
+                      width: 100vw; 
+                      height: 100vh; 
+                      border: none; 
+                  }
+              </style>
+          </head>
+          <body>
+              <a href="main.pdf" download class="download-btn">⬇ Download PDF</a>
+              <iframe src="main.pdf"></iframe>
+          </body>
+          </html>
+          EOF
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: 'public'
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
